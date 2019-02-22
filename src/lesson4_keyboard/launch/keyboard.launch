@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="keyboard_reader" type="keyboard_event_publisher" name="keyboard_event_publisher"></node>
+    <node pkg="lesson4_keyboard" type="keyboard" name="keyboard" output="screen"></node>
+</launch>
