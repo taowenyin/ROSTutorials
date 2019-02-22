@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen"></node>
+    <node pkg="lesson5_stm32_serial" type="stm32_serial_listener" name="stm32_serial_listener" output="screen"></node>
+</launch>
