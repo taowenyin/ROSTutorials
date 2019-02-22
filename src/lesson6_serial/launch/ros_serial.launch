@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="lesson6_serial" type="serial_talker" name="serial_talker" output="screen"></node>
+    <node pkg="lesson6_serial" type="serial_listener" name="serial_node" output="screen"></node>
+</launch>
