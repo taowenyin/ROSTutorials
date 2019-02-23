@@ -49,7 +49,7 @@ link_directories(${X11_LIBRARY_DIR})
 
 add_library(check_for_keyboard_priority src/check_for_keyboard_priority.cpp)   
 target_link_libraries(check_for_keyboard_priority ${catkin_LIBRARIES} ${X11_LIBRARIES} )   
-add_dependencies(check_for_keyboard_priority temoto_generate_messages_cpp)
+add_dependencies(check_for_keyboard_priority ${PROJECT_NAME}_generate_messages_cpp)
 
 add_library(keyboard_reader src/keyboard_reader.cpp)
 target_link_libraries(keyboard_reader ${catkin_LIBRARIES})
@@ -57,4 +57,4 @@ add_dependencies(keyboard_reader ${catkin_EXPORTED_TARGETS})
 
 add_executable(keyboard_event_publisher src/keyboard_event_publisher.cpp)
 target_link_libraries(keyboard_event_publisher ${catkin_LIBRARIES} keyboard_reader check_for_keyboard_priority)
-add_dependencies(keyboard_event_publisher keyboard_reader_gencpp ${catkin_EXPORTED_TARGETS})
+add_dependencies(keyboard_event_publisher ${PROJECT_NAME}_generate_messages_cpp ${catkin_EXPORTED_TARGETS})

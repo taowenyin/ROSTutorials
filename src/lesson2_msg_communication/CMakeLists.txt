@@ -203,8 +203,8 @@ include_directories(
 
 add_executable(person_talker src/talker.cpp)
 target_link_libraries(person_talker ${catkin_LIBRARIES})
-#add_dependencies(person_talker ${PROJECT_NAME}_generate_message_cpp)
+add_dependencies(person_talker ${PROJECT_NAME}_generate_messages_cpp)
 
 add_executable(person_listener src/listener.cpp)
 target_link_libraries(person_listener ${catkin_LIBRARIES})
-#add_dependencies(person_listener ${PROJECT_NAME}_generate_message_cpp)
+add_dependencies(person_listener ${PROJECT_NAME}_generate_messages_cpp)

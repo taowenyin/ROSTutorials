@@ -200,8 +200,8 @@ include_directories(
 
 add_executable(server src/server.cpp)
 target_link_libraries(server ${catkin_LIBRARIES})
-add_dependencies(server ${PROJECT_NAME}_generate_message_cpp)
+add_dependencies(server ${PROJECT_NAME}_generate_messages_cpp)
 
 add_executable(client src/client.cpp)
 target_link_libraries(client ${catkin_LIBRARIES})
-add_dependencies(client ${PROJECT_NAME}_generate_message_cpp)
+add_dependencies(client ${PROJECT_NAME}_generate_messages_cpp)

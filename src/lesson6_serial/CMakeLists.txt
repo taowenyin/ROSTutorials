@@ -201,8 +201,6 @@ include_directories(
 
 add_executable(serial_talker src/serial_talker.cpp)
 target_link_libraries(serial_talker ${catkin_LIBRARIES})
-add_dependencies(serial_talker ${PROJECT_NAME}_generate_messages_cpp)
 
 add_executable(serial_listener src/serial_listener.cpp)
 target_link_libraries(serial_listener ${catkin_LIBRARIES})
-add_dependencies(serial_listener ${PROJECT_NAME}_generate_messages_cpp)
