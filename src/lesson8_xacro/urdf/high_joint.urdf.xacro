@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="robot_high_joint" params="index">
+        <joint name="top_brace_high_joint_${index}" type="fixed">
+            <origin xyz="0.0 0.0 ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            <parent link="top_brace_${index}"/>
+            <child link="base_link_${index + 1}"/>
+        </joint>
+    </xacro:macro>
+</robot>

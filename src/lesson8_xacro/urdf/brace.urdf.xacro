@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="robot_brace" params="index parent">
+        <joint name="top_brace_low_joint_${index}" type="fixed">
+            <xacro:if value="${index == 0}">
+                <origin xyz="${brace_position} 0.0 ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <xacro:if value="${index == 1}">
+                <origin xyz="0.0 0.0 ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <parent link="${parent}"/>
+            <child link="top_brace_${index}"/>
+        </joint>
+
+        <link name="top_brace_${index}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${brace_radius}" length="${brace_length}"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.75 0.75 0.75 1.0"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="left_brace_low_joint_${index}" type="fixed">
+            <xacro:if value="${index == 0}">
+                <origin xyz="-${brace_position} 0.0 ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <xacro:if value="${index == 1}">
+                <origin xyz="-${brace_position * 2} 0.0 ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <parent link="${parent}"/>
+            <child link="left_brace_${index}"/>
+        </joint>
+
+        <link name="left_brace_${index}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${brace_radius}" length="${brace_length}"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.75 0.75 0.75 1.0"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="right_brace_low_joint_${index}" type="fixed">
+            <xacro:if value="${index == 0}">
+                <origin xyz="0.0 ${brace_position} ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <xacro:if value="${index == 1}">
+                <origin xyz="-${brace_position} ${brace_position} ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <parent link="${parent}"/>
+            <child link="right_brace_${index}"/>
+        </joint>
+
+        <link name="right_brace_${index}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${brace_radius}" length="${brace_length}"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.75 0.75 0.75 1.0"/>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="bottom_brace_low_joint_${index}" type="fixed">
+            <xacro:if value="${index == 0}">
+                <origin xyz="0.0 -${brace_position} ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <xacro:if value="${index == 1}">
+                <origin xyz="-${brace_position} -${brace_position} ${brace_length / 2}" rpy="0.0 0.0 0.0"/>
+            </xacro:if>
+            <parent link="${parent}"/>
+            <child link="bottom_brace_${index}"/>
+        </joint>
+
+        <link name="bottom_brace_${index}">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${brace_radius}" length="${brace_length}"/>
+                </geometry>
+                <material name="gray">
+                    <color rgba="0.75 0.75 0.75 1.0"/>
+                </material>
+            </visual>
+        </link>
+    </xacro:macro>
+</robot>
