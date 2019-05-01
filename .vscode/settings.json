@@ -38,5 +38,6 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "string": "cpp"
-    }
+    },
+    "ros.distro": "kinetic"
 }
