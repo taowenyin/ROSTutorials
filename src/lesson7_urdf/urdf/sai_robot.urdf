@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot name="saibot">
+    <link name="base_link">
+        <visual>
+            <origin xyz="1.0 1.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.20" length="0.16"/>
+            </geometry>
+            <material name="yellow">
+                <color rgba="1.0 0.4 0.0 1.0"/>
+            </material>
+        </visual>
+    </link>
+</robot>
