@@ -10,6 +10,7 @@
                 "/opt/ros/kinetic/include",
                 "/home/taowenyin/MyCode/ROSTutorials/src/lesson1_msg_communication/include",
                 "/home/taowenyin/MyCode/ROSTutorials/src/lesson2_msg_communication/include",
+                "/home/taowenyin/MyCode/ROSTutorials/src/keyboard_reader/include",
                 "/usr/include"
             ],
             "name": "Linux",
