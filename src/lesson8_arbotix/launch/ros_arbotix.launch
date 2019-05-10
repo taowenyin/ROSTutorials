@@ -1,0 +1,21 @@
+<launch>
+    <param name="robot_description" textfile="$(find lesson8_arbotix)/urdf/sai_robot.urdf" />
+
+    <!-- 设置GUI参数，显示关节控制插件 -->
+    <param name="use_gui" value="true" />
+
+    <!-- 添加Arbotix模拟配置信息 -->
+    <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
+        <rosparam file="$(find lesson8_arbotix)/config/arbotix.yaml" command="load" />
+        <param name="sim" value="true" />
+    </node>
+
+    <!-- 运行joint_state_publisher节点，发布机器人的关节状态 -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <!-- 运行robot_state_publisher节点，发布机器人的TF状态 -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+
+    <!-- 运行rviz可视化界面 -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lesson8_arbotix)/config/config.rviz" required="true" />
+</launch>
