@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<robot name="saibot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="M_PI" value="3.14" />
+
+    <!-- 底座的半径和高度 -->
+    <xacro:property name="base_link_mass" value="20" />
+    <xacro:property name="base_link_radius" value="0.20" />
+    <xacro:property name="base_link_length" value="0.16" />
+
+    <!-- 轮子的半径、高度、z轴、y轴 -->
+    <xacro:property name="wheel_mass" value="20" />
+    <xacro:property name="wheel_radius" value="0.06" />
+    <xacro:property name="wheel_length" value="0.025" />
+    <xacro:property name="wheel_z" value="-0.05" />
+    <xacro:property name="wheel_y" value="0.19" />
+
+    <!-- 支撑轮的半径、x轴 -->
+    <xacro:property name="caster_mass" value="0.5" />
+    <xacro:property name="caster_radius" value="0.015" />
+    <xacro:property name="caster_x" value="0.18" />
+
+    <!-- 摄像头的的长、宽、高、x轴 -->
+    <xacro:property name="camera_x" value="0.17" />
+    <xacro:property name="camera_length" value="0.03" />
+    <xacro:property name="camera_width" value="0.04" />
+    <xacro:property name="camera_high" value="0.04" />
+
+    <!-- 激光雷达头的的半径和高度 -->
+    <xacro:property name="laser_radius" value="0.05" />
+    <xacro:property name="laser_length" value="0.06" />
+
+    <!-- 球形的惯性矩阵 -->
+    <xacro:macro name="sphere_inertial_matrix" params="m r">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${2 * m * r * r / 5}" ixy="0.0" ixz="0.0" iyy="${2 * m * r * r / 5}" iyz="0.0" izz="${2 * m * r * r / 5}"/>
+        </inertial>
+    </xacro:macro>
+    <!-- 圆柱的惯性矩阵 -->
+    <xacro:macro name="cylinder_inertial_matrix" params="m r h">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${m * (3 * r * r + h * h) / 12}" ixy="0.0" ixz="0.0" iyy="${m * (3 * r * r + h * h) / 12}" iyz="0.0" izz="${m * r * r / 2}"/>
+        </inertial>
+    </xacro:macro>
+
+    <material name="yellow">
+        <color rgba="1.0 0.4 0.0 1.0"/>
+    </material>
+    <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+    </material>
+    <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+    </material>
+
+    <link name="base_link">
+        <visual>
+            <!-- Set the position of the link and the rotation parameters of each axis -->
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <!-- Set the shape parameters of the link -->
+            <geometry>
+                <cylinder radius="${base_link_radius}" length="${base_link_length}"/>
+            </geometry>
+            <!-- Set the color parameters of the link -->
+            <material name="yellow" />
+        </visual>
+        <collision>
+            <!-- Set the position of the collision and the rotation parameters of each axis -->
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <!-- Set the shape parameters of the collision -->
+            <geometry>
+                <cylinder radius="${base_link_radius}" length="${base_link_length}"/>
+            </geometry>
+        </collision>
+        <cylinder_inertial_matrix m="${base_link_mass}" r="${base_link_radius}" h="${base_link_length}" />
+    </link>
+    <!-- add gazebo material -->
+    <gazebo reference="base_link">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <!-- Create a joint of type that rotates infinitely around a single axis -->
+    <joint name="left_wheel_joint" type="continuous">
+        <origin xyz="0.0 ${wheel_y} ${wheel_z}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="left_wheel_link"/>
+        <!-- Set to rotate around the y axis -->
+        <axis xyz="0.0 1.0 0.0"/>
+    </joint>
+    <link name="left_wheel_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <material name="white" />
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+        </collision>
+        <cylinder_inertial_matrix m="${wheel_mass}" r="${wheel_radius}" h="${wheel_length}" />
+    </link>
+    <gazebo reference="left_wheel_link">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <!-- add gazebo controller -->
+    <transmission name="left_wheel_joint_tran">
+        <type>transmission_interface/SimpleTransmission</type>
+        <!-- Link join the join and controller -->
+        <joint name="left_wheel_joint">
+            <!-- Set Join controller interface -->
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <!-- Set join to motor -->
+        <actuator name="left_wheel_joint_motor">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <!-- Set the reduction ratio -->
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <joint name="right_wheel_joint" type="continuous">
+        <origin xyz="0.0 -${wheel_y} ${wheel_z}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="right_wheel_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+    </joint>
+    <link name="right_wheel_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+            <material name="white" />
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+            </geometry>
+        </collision>
+        <cylinder_inertial_matrix m="${wheel_mass}" r="${wheel_radius}" h="${wheel_length}" />
+    </link>
+    <gazebo reference="right_wheel_link">
+        <material>Gazebo/White</material>
+    </gazebo>
+    <transmission name="right_wheel_joint_tran">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="right_wheel_joint">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="right_wheel_joint_motor">
+            <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+    <joint name="front_caster_joint" type="continuous">
+        <origin xyz="${caster_x} 0.0 -${base_link_length / 2 + caster_radius}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="front_caster_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+    </joint>
+    <link name="front_caster_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${caster_radius}"/>
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${caster_radius}"/>
+            </geometry>
+        </collision>
+        <sphere_inertial_matrix m="${caster_mass}" r="${caster_radius}" />
+    </link>
+    <gazebo reference="front_caster_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="back_caster_joint" type="continuous">
+        <origin xyz="-${caster_x} 0.0 -${base_link_length / 2 + caster_radius}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="back_caster_link"/>
+        <axis xyz="0.0 1.0 0.0"/>
+    </joint>
+    <link name="back_caster_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${caster_radius}"/>
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="${M_PI / 2} 0.0 0.0"/>
+            <geometry>
+                <sphere radius="${caster_radius}"/>
+            </geometry>
+        </collision>
+        <sphere_inertial_matrix m="${caster_mass}" r="${caster_radius}" />
+    </link>
+    <gazebo reference="back_caster_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <!-- Create a joint of type fixed joint -->
+    <joint name="camera_joint" type="fixed">
+        <origin xyz="${camera_x} 0.0 ${base_link_length / 2 + camera_high / 2}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="camera_link"/>
+    </joint>
+    <link name="camera_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${camera_length} ${camera_width} ${camera_high}"/>
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="${camera_length} ${camera_width} ${camera_high}"/>
+            </geometry>
+        </collision>
+    </link>
+    <gazebo reference="camera_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="laser_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${base_link_length / 2 + laser_length / 2}" rpy="0.0 0.0 0.0"/>
+        <parent link="base_link"/>
+        <child link="laser_link"/>
+    </joint>
+    <link name="laser_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${laser_radius}" length="${laser_length}"/>
+            </geometry>
+            <material name="black" />
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="${laser_radius}" length="${laser_length}"/>
+            </geometry>
+        </collision>
+    </link>
+    <gazebo reference="laser_link">
+        <material>Gazebo/Black</material>
+    </gazebo>
+
+    <joint name="kinect_joint" type="fixed">
+        <origin xyz="-${camera_x} 0.0 0.115" rpy="0.0 0.0 -${M_PI / 2}"/>
+        <parent link="base_link"/>
+        <child link="kinect_link"/>
+    </joint>
+    <link name="kinect_link">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <!-- Load texture description file -->
+                <mesh filename="package://lesson7_urdf/meshes/kinect.dae" />
+            </geometry>
+        </visual>
+    </link>
+
+    <!-- add Gazebo controller -->
+    <gazebo>
+        <plugin name="differential_drive_controller" 
+                filename="libgazebo_ros_diff_drive.so">
+            <rosDebugLevel>Debug</rosDebugLevel>
+            <publishWheelTF>true</publishWheelTF>
+            <robotNamespace>/</robotNamespace>
+            <publishTf>1</publishTf>
+            <publishWheelJointState>true</publishWheelJointState>
+            <alwaysOn>true</alwaysOn>
+            <updateRate>100.0</updateRate>
+            <legacyMode>true</legacyMode>
+            <leftJoint>left_wheel_joint</leftJoint>
+            <rightJoint>right_wheel_joint</rightJoint>
+            <wheelSeparation>${2 * wheel_y}</wheelSeparation>
+            <wheelDiameter>${2 * wheel_radius}</wheelDiameter>
+            <broadcastTF>1</broadcastTF>
+            <wheelTorque>30</wheelTorque>
+            <wheelAcceleration>1.8</wheelAcceleration>
+            <commandTopic>cmd_vel</commandTopic>
+            <odometryFrame>odom</odometryFrame> 
+            <odometryTopic>odom</odometryTopic> 
+            <robotBaseFrame>base_link</robotBaseFrame>
+        </plugin>
+    </gazebo>
+</robot>
