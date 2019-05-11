@@ -1,4 +1,5 @@
-controller: {
+# 添加多个控制器
+controllers: {
   base_controller: {
     # 定义为差速轮
     type: diff_controller,

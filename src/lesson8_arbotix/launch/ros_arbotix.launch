@@ -18,4 +18,7 @@
 
     <!-- 运行rviz可视化界面 -->
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lesson8_arbotix)/config/config.rviz" required="true" />
+
+    <!-- 添加键盘控制 -->
+    <node name="keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" />
 </launch>
