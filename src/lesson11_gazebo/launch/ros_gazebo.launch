@@ -18,7 +18,7 @@
 
     <!-- 添加Arbotix模拟配置信息 -->
     <node name="arbotix" pkg="arbotix_python" type="arbotix_driver" output="screen">
-        <rosparam file="$(find lesson8_arbotix)/config/arbotix.yaml" command="load" />
+        <rosparam file="$(find lesson11_gazebo)/config/arbotix.yaml" command="load" />
         <param name="sim" value="true" />
     </node>
 
@@ -29,10 +29,10 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
     <!-- 运行rviz可视化界面 -->
-    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lesson8_arbotix)/config/config.rviz" required="true" /> -->
+    <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lesson11_gazebo)/config/config.rviz" required="true" /> -->
 
     <!-- 在gazebo中加载机器人模型 -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model sai_robot -param robot_description" />
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" resspawn="false" args="-urdf -model sai_robot -param robot_description" />
 
     <!-- 添加键盘控制 -->
     <node name="keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" />

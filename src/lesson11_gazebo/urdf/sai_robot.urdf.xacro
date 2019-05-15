@@ -262,13 +262,13 @@
     </gazebo>
 
     <joint name="kinect_joint" type="fixed">
-        <origin xyz="-${camera_x} 0.0 0.115" rpy="0.0 0.0 -${M_PI / 2}"/>
+        <origin xyz="-${camera_x} 0.0 0.115" rpy="0.0 0.0 -${M_PI}"/>
         <parent link="base_link"/>
         <child link="kinect_link"/>
     </joint>
     <link name="kinect_link">
         <visual>
-            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 ${M_PI / 2}"/>
             <geometry>
                 <!-- Load texture description file -->
                 <mesh filename="package://lesson7_urdf/meshes/kinect.dae" />
@@ -344,7 +344,7 @@
             <alwaysOn>true</alwaysOn>
             <update_rate>20</update_rate>
             <camera>
-                <horizontal_fov>${60 * M_PI / 180}</horizontal_fov>
+                <horizontal_fov>1.57</horizontal_fov>
                 <image>
                     <width>640</width>
                     <height>480</height>
@@ -354,11 +354,6 @@
                     <near>0.05</near>
                     <far>8</far>
                 </clip>
-                <noise>
-                    <type>gaussian</type>
-                    <mean>0.0</mean>
-                    <stddev>0.007</stddev>
-                </noise>
             </camera>
             <plugin name="gazebo_kinect" filename="libgazebo_ros_openni_kinect.so">
                 <alwaysOn>true</alwaysOn>
