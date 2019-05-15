@@ -16,19 +16,21 @@
     <xacro:property name="wheel_y" value="0.19" />
 
     <!-- 支撑轮的半径、x轴 -->
-    <xacro:property name="caster_mass" value="0.5" />
+    <xacro:property name="caster_mass" value="0.1" />
     <xacro:property name="caster_radius" value="0.015" />
     <xacro:property name="caster_x" value="0.18" />
 
     <!-- 摄像头的的长、宽、高、x轴 -->
+    <xacro:property name="camera_mass" value="0.1" />
     <xacro:property name="camera_x" value="0.17" />
     <xacro:property name="camera_length" value="0.03" />
     <xacro:property name="camera_width" value="0.04" />
     <xacro:property name="camera_high" value="0.04" />
 
     <!-- 激光雷达头的的半径和高度 -->
+    <xacro:property name="laser_mass" value="0.1" />
     <xacro:property name="laser_radius" value="0.05" />
-    <xacro:property name="laser_length" value="0.06" />
+    <xacro:property name="laser_length" value="0.15" />
 
     <!-- 球形的惯性矩阵 -->
     <xacro:macro name="sphere_inertial_matrix" params="m r">
@@ -42,6 +44,13 @@
         <inertial>
             <mass value="${m}"/>
             <inertia ixx="${m * (3 * r * r + h * h) / 12}" ixy="0.0" ixz="0.0" iyy="${m * (3 * r * r + h * h) / 12}" iyz="0.0" izz="${m * r * r / 2}"/>
+        </inertial>
+    </xacro:macro>
+    <!-- 立方体的惯性矩阵 -->
+    <xacro:macro name="box_inertial_matrix" params="m">
+        <inertial>
+            <mass value="${m}"/>
+            <inertia ixx="${m}" ixy="0.0" ixz="0.0" iyy="${m}" iyz="0.0" izz="${m}"/>
         </inertial>
     </xacro:macro>
 
@@ -232,6 +241,7 @@
                 <box size="${camera_length} ${camera_width} ${camera_high}"/>
             </geometry>
         </collision>
+        <box_inertial_matrix m="${camera_mass}" />
     </link>
     <gazebo reference="camera_link">
         <material>Gazebo/Black</material>
@@ -256,6 +266,7 @@
                 <cylinder radius="${laser_radius}" length="${laser_length}"/>
             </geometry>
         </collision>
+        <cylinder_inertial_matrix m="${laser_mass}" r="${laser_radius}" h="${laser_length}" />
     </link>
     <gazebo reference="laser_link">
         <material>Gazebo/Black</material>
@@ -302,6 +313,7 @@
         </plugin>
     </gazebo>
 
+    <!-- add Gazebo Camera -->
     <gazebo reference="camera_link">
         <sensor type="camera" name="camera_node">
             <update_rate>30</update_rate>
@@ -339,6 +351,7 @@
         </sensor>
     </gazebo>
 
+    <!-- add Gazebo Kinect -->
     <gazebo reference="kinect_link">
         <sensor type="depth" name="kinect_node">
             <alwaysOn>true</alwaysOn>
@@ -376,6 +389,7 @@
         </sensor>
     </gazebo>
 
+    <!-- add Gazebo Laser -->
     <gazebo reference="laser_link">
         <sensor type="ray" name="laser_node">
             <pose>0 0 0 0 0 0</pose>
@@ -387,7 +401,7 @@
                         <samples>360</samples>
                         <resolution>1</resolution>
                         <min_angle>-3</min_angle>
-                        <max_angle>-3</max_angle>
+                        <max_angle>3</max_angle>
                     </horizontal>
                 </scan>
                 <range>

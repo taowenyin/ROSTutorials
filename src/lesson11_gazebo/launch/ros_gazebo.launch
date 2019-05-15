@@ -32,7 +32,7 @@
     <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find lesson11_gazebo)/config/config.rviz" required="true" /> -->
 
     <!-- 在gazebo中加载机器人模型 -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" resspawn="false" args="-urdf -model sai_robot -param robot_description" />
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" args="-urdf -model sai_robot -param robot_description" />
 
     <!-- 添加键盘控制 -->
     <node name="keyboard" pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" output="screen" />
