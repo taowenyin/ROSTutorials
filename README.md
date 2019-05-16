@@ -19,6 +19,6 @@ ROS实例代码
 
 [ROS串口标准库](https://github.com/wjwwood/serial)
 
-> 8、lesson7_rviz：RVIZ的使用案例。
+> 8、lesson7_urdf：RVIZ的使用案例。
 
 > 9、lesson8_xacro：xacro的使用案例。
