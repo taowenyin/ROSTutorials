@@ -1,0 +1,9 @@
+<launch>
+    <!-- 棋盘格内部的角点数，横竖各8个和6个焦点 -->
+    <arg name="size" default="8x6" />
+    <!-- 棋盘格中每格的边长 -->
+    <arg name="square" default="0.024" />
+
+    <!-- image为摄像头的图像话题，camera为摄像头的坐标系ID -->
+    <node name="camera_calibration" pkg="camera_calibration" type="cameracalibrator.py" args="--size $(arg size) --square $(arg square) image:=/usb_cam/image_raw camera:=/usb_cam" />
+</launch>
