@@ -1,0 +1,12 @@
+<launch>
+    <node name="face_detector" pkg="lesson14_face_detector" type="face_detector.py" output="screen">
+        <param name="haar_scaleFactor" value="1.2" />
+        <param name="haar_minNeighbors" value="2" />
+        <param name="haar_minSize" value="40" />
+        <param name="haar_maxSize" value="60" />
+
+        <!-- 设置人脸正面和侧面的模型 -->
+        <param name="cascade_1" value="$(find lesson14_face_detector)/data/haar_detectors/haarcascade_frontalface_alt.xml" />
+        <param name="cascade_2" value="$(find lesson14_face_detector)/data/haar_detectors/haarcascade_profileface.xml" />
+    </node>
+</launch>
