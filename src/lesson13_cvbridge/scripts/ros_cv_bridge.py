@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sensor_msgs.msg import Image
-from cv_bridge import *
+from cv_bridge import CvBridge, CvBridgeError
 import rospy
 import cv2
 

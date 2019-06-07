@@ -39,5 +39,6 @@
         "typeinfo": "cpp",
         "string": "cpp"
     },
-    "ros.distro": "kinetic"
+    "ros.distro": "kinetic",
+    "python.pythonPath": "/usr/bin/python"
 }
