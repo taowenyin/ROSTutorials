@@ -1,0 +1,6 @@
+<launch>
+    <node name="motion_detector" pkg="lesson15_motion_detector" type="motion_detector.py" output="screen">
+        <param name="minArea" value="500" />
+        <param name="threshold" value="25" />
+    </node>
+</launch>
